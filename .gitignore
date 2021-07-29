@@ -1,0 +1,13 @@
+node_modules
+*.log
+*.log.*
+logs
+.vscode
+dest
+dist
+coverage
+.idea
+package-lock.json
+.DS_*
+run/
+.zip

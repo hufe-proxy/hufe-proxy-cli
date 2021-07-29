@@ -1,0 +1,18 @@
+{
+  "extends": "./node_modules/mwts/",
+  "ignorePatterns": ["node_modules", "dist", "test", "jest.config.js", "typings"],
+  "env": {
+    "jest": true
+  },
+  "plugins": ["jest"],
+  "rules": {
+    "linebreak-style": [0, "error", "windows"],
+    "prettier/prettier": 0,
+    "semi": ["error", "never"],
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_"
+    }],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-types": "off"
+  }
+}
