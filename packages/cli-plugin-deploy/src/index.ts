@@ -1,13 +1,13 @@
 import { Option, Command } from 'commander'
 import ora = require('ora')
 import execa = require('execa')
-import AdmZip = require('adm-zip')
 import fs = require('fs')
 import os = require('os')
+import archiver = require('archiver')
 import FormData = require('form-data');
+import { getZipFiles } from './utils/index'
 import { BUILD } from './constant'
 import { IOptions } from './interface/option'
-import { getZipFiles } from './utils'
 import axios from 'axios'
 import config from './config/index'
 export class DeployPlugin {
@@ -44,11 +44,11 @@ export class DeployPlugin {
         await this.buildProject()
       }
       // 压缩包
-      const zipBuffer = await this.zipProject()
+      const zipStream = await this.zipProject()
       // 获取项目名称
       const projectName = this.getProjectName()
       // 上传压缩包
-      const rules = await this.uploadZipProject(zipBuffer, projectName)
+      const rules = await this.uploadZipProject(zipStream, projectName)
       // 验证代理工具
       await this.verifyProxyTool()
       // 注入脚本
@@ -69,25 +69,40 @@ export class DeployPlugin {
     }
   }
 
-  async zipProject(): Promise<Buffer> {
+  async zipProject(): Promise<fs.ReadStream> {
     const spinner = ora('starting zip project').start()
+    const cwd = process.cwd()
+    const distPath = `${cwd}/dist`
+    const zipPath = `${cwd}/dist.zip`
     try {
       // 检测有无dist包
-      const cwd = process.cwd()
-      const isExist = fs.existsSync(`${cwd}/dist`)
+      const isExist = fs.existsSync(distPath)
       if (!isExist) {
         throw new Error('not found dist folder')
       }
-      const zipFiles = getZipFiles(`${cwd}/dist`)
-      const zip = new AdmZip()
-      zipFiles.forEach(file => {
-        zip.addLocalFile(file.url, `dist/${file.dir}`)
+      // 创建压缩包
+      const output = fs.createWriteStream(zipPath)
+      const archive = archiver('zip', {
+        zlib: {
+          level: 9
+        }
       })
+      getZipFiles(distPath).forEach(file => {
+        archive.append(fs.createReadStream(file.url), {
+          name: 'dist/' + file.dir + '/' + file.name
+        })
+      })
+      archive.pipe(output)
+      await archive.finalize()
       spinner.succeed('zip project success')
-      return zip.toBuffer()
+      return fs.createReadStream(zipPath)
     } catch (error) {
       spinner.fail('zip project fail')
       throw error
+    } finally {
+      if (fs.existsSync(zipPath)) {
+        fs.unlinkSync(zipPath)
+      }
     }
   }
 
@@ -131,7 +146,7 @@ export class DeployPlugin {
     }
   }
 
-  async uploadZipProject(zipBuffer: Buffer, projectName: string) {
+  async uploadZipProject(zipStream: fs.ReadStream, projectName: string) {
     const spinner = ora('upload zip project').start()
     try {
       const projectNameFormat = projectName.replace(/winning-|webui-/g, '')
@@ -140,7 +155,7 @@ export class DeployPlugin {
       form.append('hostVersion', os.version())
       form.append('name', this.options.mark)
       form.append('projectName', projectNameFormat)
-      form.append('attach', zipBuffer, 'dist.zip')
+      form.append('attach', zipStream)
       const { data } = await axios.post(config.UPLOAD_URL, form, {
         headers: {
           ...form.getHeaders(),
