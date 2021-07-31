@@ -1,7 +1,7 @@
 {
   "name": "winex-proxy-cli",
   "description": "cli by winex-proxy",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": false,
   "devDependencies": {
     "@types/jest": "^26.0.24",
