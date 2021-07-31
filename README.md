@@ -1,14 +1,16 @@
 # winex-proxy-cli
 
+## install
+
+`npm i @winex-proxy-cli/cli`
+
 ## develop
 
 `npm run install`
 
-## build
-
 `npm run build`
 
-## start
+## usage
 
 `wp -v`
 
