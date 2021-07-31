@@ -16,6 +16,9 @@
     "type": "git",
     "url": "https://github.com/winex-proxy/winex-proxy-cli.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist",
     "package.json"
