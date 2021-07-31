@@ -1,13 +1,47 @@
 import { program } from 'commander'
 import { textSync } from 'figlet'
+import execa = require('execa')
+import semver = require('semver')
+import chalk = require('chalk')
+import path = require('path')
+import fs = require('fs')
+import os = require('os')
 import { DeployPlugin } from '@winex-proxy-cli/cli-plugin-deploy'
+import config from './config/index'
 const pkg = require('../package.json')
 
 export class CLI {
 
   async start() {
+    await this.checkUpdate()
     this.handleVersion()
     this.loadPlugin()
+  }
+
+  async checkUpdate() {
+    const now = Date.now()
+    const updateLog = path.join(os.tmpdir(), 'winex-proxy-cli-update.log')
+    if (fs.existsSync(updateLog)) {
+      const logTime = +fs.readFileSync(updateLog).toString()
+      // 24小时内仅执行一次
+      if (now - logTime < 24 * 3600000) return
+    }
+    fs.writeFileSync(updateLog, `${now}`)
+    try {
+      const { stdout } = await execa('npm',
+        [`--registry=${config.registry}`, 'view', '@winex-proxy-cli/cli', 'dist-tags', '--json']
+      )
+      const latestVersion = JSON.parse(stdout)['latest']
+      const curVersion = pkg.version
+      if (semver.gt(latestVersion, curVersion)) {
+        console.log('--------------------------------------------------------------------')
+        console.log(chalk.yellow(`                     lastest version：${latestVersion}`))
+        console.log(chalk.yellow('                   npm i @winex-proxy-cli/cli -g'))
+        console.log('--------------------------------------------------------------------')
+      }
+    } catch (error) {
+      console.error('check lastest version error：', error)
+    }
   }
 
   handleVersion() {

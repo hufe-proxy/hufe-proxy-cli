@@ -27,11 +27,15 @@
   },
   "dependencies": {
     "@winex-proxy-cli/cli-plugin-deploy": "0.0.0",
+    "chalk": "^4.1.2",
     "commander": "^8.1.0",
-    "figlet": "^1.5.0"
+    "execa": "^5.1.1",
+    "figlet": "^1.5.0",
+    "semver": "^7.3.5"
   },
   "devDependencies": {
     "@types/figlet": "^1.5.4",
+    "@types/semver": "^7.3.8",
     "typescript": "^4.3.5"
   }
 }
