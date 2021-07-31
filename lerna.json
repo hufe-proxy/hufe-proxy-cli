@@ -6,7 +6,8 @@
   "npmClient": "yarn",
   "command": {
     "ignoreChanges": [
-      "*.md"
+      "*.md",
+      "example/**"
     ]
   },
   "bootstrap": {
