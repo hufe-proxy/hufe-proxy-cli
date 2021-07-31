@@ -1,6 +1,6 @@
 {
   "name": "@winex-proxy-cli/cli-plugin-deploy",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "dist/index",
   "typings": "dist/index.d.ts",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@winex-proxy-cli/cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "bin": {
     "winex-proxy-cli-bin": "bin/winex-proxy-cli.js",
@@ -26,7 +26,7 @@
     "url": "https://github.com/winex-proxy/winex-proxy-cli.git"
   },
   "dependencies": {
-    "@winex-proxy-cli/cli-plugin-deploy": "0.0.0",
+    "@winex-proxy-cli/cli-plugin-deploy": "^0.0.1",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "execa": "^5.1.1",
