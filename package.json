@@ -4,20 +4,39 @@
   "version": "0.0.1",
   "private": false,
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.1",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.31.0",
     "eslint-plugin-jest": "^24.4.0",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "lerna": "^4.0.0",
+    "lint-staged": "^11.1.1",
     "mwts": "^1.2.2",
     "typescript": "^4.3.5"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "scripts": {
-    "install": "lerna bootstrap",
+    "husky": "husky install",
+    "install": "lerna bootstrap && npm run husky",
     "clean": "lerna clean --yes && rm -rf ./packages/**/package-lock.json",
     "build": "lerna run build",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "commit": "lint-staged && git-cz"
   },
   "keywords": [
     "winex-proxy",
