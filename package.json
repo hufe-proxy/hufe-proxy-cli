@@ -9,6 +9,7 @@
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.1",
     "commitizen": "^4.2.4",
+    "conventional-changelog-cli": "^2.1.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.31.0",
     "eslint-plugin-jest": "^24.4.0",
@@ -36,7 +37,8 @@
     "clean": "lerna clean --yes && rm -rf ./packages/**/package-lock.json",
     "build": "lerna run build",
     "test": "lerna run test",
-    "commit": "lint-staged && git-cz"
+    "commit": "lint-staged && git-cz",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "keywords": [
     "winex-proxy",
