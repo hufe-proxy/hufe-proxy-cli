@@ -2,6 +2,7 @@ import { program } from 'commander'
 import { textSync } from 'figlet'
 import execa = require('execa')
 import semver = require('semver')
+import ora = require('ora')
 import chalk = require('chalk')
 import path = require('path')
 import fs = require('fs')
@@ -27,6 +28,7 @@ export class CLI {
       if (now - logTime < 24 * 3600000) return
     }
     fs.writeFileSync(updateLog, `${now}`)
+    const spinner = ora('check lastest version').start()
     try {
       const { stdout } = await execa('npm',
         [`--registry=${config.registry}`, 'view', '@winex-proxy-cli/cli', 'dist-tags', '--json']
@@ -34,13 +36,19 @@ export class CLI {
       const latestVersion = JSON.parse(stdout)['latest']
       const curVersion = pkg.version
       if (semver.gt(latestVersion, curVersion)) {
+        spinner.succeed('find lastest version')
+        console.log()
         console.log('--------------------------------------------------------------------')
         console.log(chalk.yellow(`                     lastest version：${latestVersion}`))
         console.log(chalk.yellow('                   npm i @winex-proxy-cli/cli -g'))
         console.log('--------------------------------------------------------------------')
+        console.log()
+      } else {
+        spinner.succeed('current version is already lastest')
       }
     } catch (error) {
-      console.error('check lastest version error：', error)
+      spinner.fail('check lastest version fail')
+      console.error('check lastest version fail', error)
     }
   }
 
