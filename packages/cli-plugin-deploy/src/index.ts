@@ -116,10 +116,10 @@ export class DeployPlugin {
         const data = fs.readFileSync(configUrl, 'utf-8')
         if (data) {
           let name = ''
-          const reg = /publicPath.*:.*['"](.*)['"]/
+          const reg = /(publicPath|baseUrl).*:.*['"](.*)['"]/
           const execResult = reg.exec(data)
           if (execResult) {
-            name = execResult[1].replace(/^\/|\/$/g, '')
+            name = execResult[2].replace(/^\/|\/$/g, '')
           }
           if (name) {
             spinner.succeed(`get project name success (${name})`)
