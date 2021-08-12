@@ -1,7 +1,7 @@
 {
   "name": "winex-proxy-cli",
   "description": "cli by winex-proxy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
