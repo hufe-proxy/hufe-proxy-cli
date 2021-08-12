@@ -177,7 +177,7 @@ export class DeployPlugin {
     const spinner = ora('verify proxy tool').start()
     try {
       const { stdout } = await execa('w2', ['status'])
-      if (stdout.includes('No Running')) {
+      if (stdout.toUpperCase().includes('NO RUNNING')) {
         await execa('w2', ['start', '-p', config.WHISTLE_PORT])
       }
       spinner.succeed('verify proxy tool success')
