@@ -46,7 +46,7 @@ export class DeployPlugin {
       // 压缩包
       const zipStream = await this.zipProject()
       // 获取项目名称
-      const projectName = this.getProjectName()
+      const projectName = this.getProjectName(process.cwd())
       // 上传压缩包
       const rules = await this.uploadZipProject(zipStream, projectName)
       // 验证代理工具
@@ -106,10 +106,9 @@ export class DeployPlugin {
     }
   }
 
-  getProjectName(): string {
+  getProjectName(cwd: string): string {
     const spinner = ora('get project name').start()
     try {
-      const cwd = process.cwd()
       // vue.config.js publicPath
       const configUrl = `${cwd}/vue.config.js`
       if (fs.existsSync(configUrl)) {
