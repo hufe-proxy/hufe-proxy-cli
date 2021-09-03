@@ -1,2 +1,5 @@
-export const BUILD = 'build'
-export const INJECT = 'inject'
+export const SKIP_TYPE = {
+  BUILD: 'build',
+  INJECT: 'inject',
+  NOTICE: 'notice'
+}

@@ -6,7 +6,7 @@ import os = require('os')
 import archiver = require('archiver')
 import FormData = require('form-data');
 import { getZipFiles } from './utils/index'
-import { BUILD } from './constant'
+import { SKIP_TYPE } from './constant'
 import { IOptions } from './interface/option'
 import axios from 'axios'
 import config from './config/index'
@@ -25,7 +25,7 @@ export class DeployPlugin {
       this.program.command('deploy')
         .addOption(
           new Option('-s, --skip [features...]', 'skip some features')
-            .choices(['build'])
+            .choices(Object.values(SKIP_TYPE))
             .default([], 'no choice')
         )
         .requiredOption('-m, --mark <mark>', 'write mark')
@@ -40,7 +40,7 @@ export class DeployPlugin {
     this.options = options
     try {
       // 执行打包
-      if (!options.skip.includes(BUILD)) {
+      if (!options.skip.includes(SKIP_TYPE.BUILD)) {
         await this.buildProject()
       }
       // 压缩包
@@ -155,6 +155,7 @@ export class DeployPlugin {
       form.append('name', this.options.mark)
       form.append('projectName', projectNameFormat)
       form.append('attach', zipStream)
+      form.append('isNotice', this.options.skip.includes(SKIP_TYPE.NOTICE) ? 0 : 1)
       const { data } = await axios.post(config.UPLOAD_URL, form, {
         headers: {
           ...form.getHeaders(),
