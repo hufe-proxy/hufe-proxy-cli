@@ -1,3 +1,12 @@
+## [0.0.4](https://github.com/winex-proxy/winex-proxy-cli/compare/v0.0.3...v0.0.4) (2021-09-03)
+
+
+### Features
+
+* add publish notice ([51a6c34](https://github.com/winex-proxy/winex-proxy-cli/commit/51a6c3438af80edbfff85a7e653540a4f4bbbc3e))
+
+
+
 ## [0.0.3](https://github.com/winex-proxy/winex-proxy-cli/compare/v0.0.2...v0.0.3) (2021-08-12)
 
 
