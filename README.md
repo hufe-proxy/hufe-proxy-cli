@@ -1,4 +1,4 @@
-# winex-proxy-cli
+# hufe-proxy-cli
 
 <p>
   <a href="https://npmcharts.com/compare/@winex-proxy-cli/cli?minimal=true"><img src="https://img.shields.io/npm/dy/@winex-proxy-cli/cli.svg?sanitize=true" alt="Downloads"></a>
